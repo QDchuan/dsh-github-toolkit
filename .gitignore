@@ -1,0 +1,7 @@
+# Dependencies (the harness provides the @deepseek-ai/* peers at runtime).
+node_modules/
+
+# Local installers and logs.
+*.log
+.DS_Store
+Thumbs.db

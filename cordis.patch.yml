@@ -1,0 +1,16 @@
+# Bundle layer for `dsh plugin --profile <name> add dsh-github-toolkit`.
+#
+# A bundle patch is one `insert` over the profile root: installing the package
+# adds it to `dsh.profile.bundles`, and this row mounts the host half. The
+# browser half needs no row of its own — it arrives through the package's
+# `dsh.client` declaration in package.json.
+#
+# The row's `name` is the package name, so it resolves from the profile's own
+# node_modules (where the package manager installed it). Every option with a
+# default is left out of the composition entry: the Web settings page writes the
+# `tool-github` settings namespace instead, and a value stated in both places
+# would only disagree with itself.
+
+- insert:
+    - id: tool-github
+      name: dsh-github-toolkit
