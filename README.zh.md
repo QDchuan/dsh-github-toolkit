@@ -27,6 +27,10 @@ dsh plugin --profile web add dsh-github-toolkit
 2. **刷新** http://127.0.0.1:3080 ，打开 **设置 → GitHub**
 3. 粘贴 PAT → 点 **测试连接**（页面会显示 `@你的账号`、`权限范围`、`剩余额度`）→ 点 **保存令牌**
 
+点开**左下角的「设置」→ GitHub**，看到的就是这一页：
+
+![Web 设置里的 GitHub 分页：令牌状态与来源、测试连接 / 保存令牌 / 清除、默认 owner 与默认仓库、API 地址、请求超时、每页条数，以及允许写操作开关](assets/settings-github.png)
+
 然后就能直接对话了，例如：
 
 - 「看一下 owner/repo 的开放 issue，按标签分个类」
@@ -183,6 +187,7 @@ npm run test:installed
 | `lib/tools-read.js` / `lib/tools-write.js` | 只读 / 写入工具定义 |
 | `lib/format.js` / `lib/shared.js` | 返回值裁剪与渲染；参数与分页 helper |
 | `test/smoke.mjs` / `test/installed.mjs` | 契约测试 / 安装副本校验 |
+| `screenshots.json` / `assets/` | 市场详情页展示用的截图（在仓库内声明） |
 
 ## 已知限制
 

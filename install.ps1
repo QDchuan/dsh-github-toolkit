@@ -208,8 +208,12 @@ if ($DryRun) {
   New-Item -ItemType Directory -Force -Path (Join-Path $targetDir 'lib') | Out-Null
   Copy-Item (Join-Path $sourceDir 'package.json') $targetDir -Force
   Copy-Item (Join-Path $sourceDir 'cordis.patch.yml') $targetDir -Force
-  foreach ($doc in 'README.md', 'README.zh.md', 'LICENSE') {
+  foreach ($doc in 'README.md', 'README.zh.md', 'LICENSE', 'screenshots.json') {
     if (Test-Path (Join-Path $sourceDir $doc)) { Copy-Item (Join-Path $sourceDir $doc) $targetDir -Force }
+  }
+  if (Test-Path (Join-Path $sourceDir 'assets')) {
+    New-Item -ItemType Directory -Force -Path (Join-Path $targetDir 'assets') | Out-Null
+    Copy-Item (Join-Path $sourceDir 'assets\*') (Join-Path $targetDir 'assets') -Force
   }
   Copy-Item (Join-Path $sourceDir 'lib\*.js') (Join-Path $targetDir 'lib') -Force
   Write-Utf8NoBom -Path $patchPath -Content $patchText

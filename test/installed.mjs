@@ -46,8 +46,21 @@ async function check(label, body) {
 process.stdout.write(`installed copy check\n  profile:    ${profile}\n  plugin dir: ${pluginDir}\n\n`)
 
 await check('every shipped file is present', () => {
-  for (const file of ['package.json', 'cordis.patch.yml', 'README.md', 'LICENSE', 'lib/index.js', 'lib/client.js', 'lib/rest.js', 'lib/shared.js', 'lib/format.js', 'lib/tools-read.js', 'lib/tools-write.js']) {
+  for (const file of ['package.json', 'cordis.patch.yml', 'README.md', 'LICENSE', 'screenshots.json', 'assets/settings-github.png', 'lib/index.js', 'lib/client.js', 'lib/rest.js', 'lib/shared.js', 'lib/format.js', 'lib/tools-read.js', 'lib/tools-write.js']) {
     assert.ok(existsSync(join(pluginDir, file)), `missing ${file}`)
+  }
+})
+
+await check('every screenshot the storefront may show exists', () => {
+  // Storefronts read the repository's own `screenshots.json`; a path that no
+  // longer resolves is a silently broken image on the plugin page.
+  const manifest = JSON.parse(readFileSync(join(pluginDir, 'screenshots.json'), 'utf8'))
+  const paths = Array.isArray(manifest) ? manifest : manifest.screenshots
+  assert.ok(Array.isArray(paths) && paths.length >= 1 && paths.length <= 8, 'screenshots.json must list 1-8 paths')
+  for (const relative of paths) {
+    assert.equal(typeof relative, 'string')
+    assert.ok(!relative.startsWith('/') && !relative.includes('..'), `${relative} must stay inside the package`)
+    assert.ok(existsSync(join(pluginDir, relative)), `declared screenshot is missing: ${relative}`)
   }
 })
 

@@ -34,6 +34,10 @@ No build scripts are involved, so this installs straight from the repository.
 
 ## Set it up in the GUI
 
+Open **Settings** from the bottom-left of the Web UI, then pick **GitHub**:
+
+![The GitHub page in Web Settings: token status and source, Test connection / Save / Clear, default owner and repository, API base, timeout, page size, and the write-access switch](assets/settings-github.png)
+
 1. Refresh the Web UI and open **Settings → GitHub**.
 2. Paste the PAT → **Test connection** (the page calls `api.github.com` directly, so you see the account, scopes, and remaining quota *before* anything is stored) → **Save token**.
 3. Optionally set **default owner** / **default repository** and save the configuration.
@@ -168,6 +172,7 @@ Do not combine that with a `dsh plugin add` install: both resolve to the same pa
 | `lib/tools-read.js`, `lib/tools-write.js` | Tool definitions |
 | `lib/format.js`, `lib/shared.js` | Payload curation/rendering and parameter helpers |
 | `test/smoke.mjs`, `test/installed.mjs` | Contract tests and an installed-copy check |
+| `screenshots.json`, `assets/` | Screenshots a storefront may show, declared inside the repository |
 
 ## Known limitations
 
