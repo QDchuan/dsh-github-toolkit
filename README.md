@@ -1,5 +1,7 @@
 # dsh-github-toolkit
 
+English | [中文](README.zh.md)
+
 GitHub for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness): 18 agent-facing `github_*` tools, plus a **GitHub page in Web Settings** that stores your PAT in the DSH credential store and takes effect without a restart.
 
 No build step, no runtime dependencies — the host half uses Node's built-in `fetch`, the browser half requires only `react` and the shell's static UI primitives.
@@ -110,6 +112,22 @@ Suggested fine-grained PAT permissions:
 - Write tools as well: `Contents: write`, `Issues: write`, `Pull requests: write`
 - CI status: `Actions: read`, `Checks: read`
 - Organization repositories with SAML SSO need the token authorized for that organization, otherwise the API answers 403.
+
+## Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| Test connection returns `401` | The token itself is invalid — truncated paste, expired or deleted, or an app secret instead of a PAT. Generate a new one |
+| "No GitHub token was found" | Neither the credential store, a `.env`, nor the process environment has a value. Save one in **Settings → GitHub**, or launch dsh with `GITHUB_TOKEN=…` |
+| Reads work, writes or repo creation fail with `403 Resource not accessible by personal access token` | The token lacks the permission (common with fine-grained tokens). Add it, or switch to a classic token |
+| `403` reporting a rate limit | Quota exhausted; the message states when it resets |
+| `403` otherwise | Usually a missing scope, or an organization behind SAML SSO where the token is not authorized |
+| `404` | The resource does not exist, **or** the token cannot see private resources (needs `repo` / `Contents: read`) |
+| `422` | GitHub rejected the fields: missing branch, `head` equal to `base`, a label or assignee that is not a collaborator — the error carries GitHub's field-level detail |
+| No **GitHub** page in Settings | Refresh the page first. If it is still absent, the running host has not published the new client-plugin graph yet (observed once); restart dsh |
+| A saved token seems to have no effect | Check whether the launching shell already exports `GITHUB_TOKEN` (it shadows the stored value; the page reports which source is in use) |
+| You installed **someone else's** plugin | `dsh-tool-github` on npm is a different project; this package is **`dsh-github-toolkit`** |
+| `git` over HTTPS: `schannel: AcquireCredentialsHandle failed: SEC_E_NO_CREDENTIALS` | Windows Schannel cannot acquire credentials in that environment (common inside sandboxes). `git config --global http.sslBackend openssl` switches git to OpenSSL; Node and pnpm are unaffected |
 
 ## Security notes
 
